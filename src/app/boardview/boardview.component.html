@@ -1,0 +1,20 @@
+<canvas #myCanvas></canvas>
+<button class="pen" id="pen" (click) = "penclick()" >Pen</button>
+<button class= "brush" (click) = "brushclick()" >Brush</button>
+<button class= "glow" (click) = "glowclick()" >GlowBrush</button>
+<button class= "signature" (click) = "signatureclick()" >Brallier Pen</button>
+<div class="sizes">
+    <button (click)="small()" >small</button>
+    <button (click)="medium()" >Medium</button>
+    <button (click)="large()" >Large</button>
+</div>
+<div class="colour">
+    <button (click)="red()" >Red</button>
+    <button (click)="green()" >Green</button>
+    <button (click)="black()" >Black</button>
+    <button (click)="blue()" >Blue</button>
+</div>
+
+<button class="pointBasedPen" (click)="pointBasedPen()" >point based pen</button> 
+<input type="file" id="inp">
+<button class="pdfdownload" (click)="pdfdownload()"  > Download </button>
