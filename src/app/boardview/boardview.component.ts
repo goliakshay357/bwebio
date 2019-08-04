@@ -31,7 +31,7 @@ export class BoardviewComponent implements OnInit {
   //content declarations
   ctx:any;
 
-  
+    
 
 
   //Add one
@@ -92,6 +92,9 @@ export class BoardviewComponent implements OnInit {
   point_currentX:any;
   point_lastX: number;
   point_lastY: number;
+
+
+
 
 
 
@@ -156,6 +159,7 @@ export class BoardviewComponent implements OnInit {
     this.glowIsTrue = false;
     this.sigIsTrue = false;
     this.pointIsTrue = false;
+    this.rectIsTrue = false;
 
     console.log("Brush activatated!");
     if(this.brushIstrue){
@@ -247,6 +251,7 @@ export class BoardviewComponent implements OnInit {
     this.glowIsTrue = false;
     this.sigIsTrue = false;
     this.pointIsTrue = false;
+    this.rectIsTrue = false;
 
     if(this.penIstrue){
 
@@ -311,7 +316,7 @@ export class BoardviewComponent implements OnInit {
     this.brushIstrue=false;
     this.sigIsTrue=false;
     this.pointIsTrue = false;
-
+    this.rectIsTrue = false;
     if(this.glowIsTrue){
         
       if(this.glowIsTrue){
@@ -371,7 +376,7 @@ export class BoardviewComponent implements OnInit {
       this.penIstrue = false;
       this.brushIstrue=false;
       this.pointIsTrue = false;
-
+      this.rectIsTrue = false;
       if(this.sigIsTrue){
         
         if(this.sigIsTrue){
@@ -440,6 +445,8 @@ export class BoardviewComponent implements OnInit {
       this.brushIstrue = false;
       this.glowIsTrue = false;
       this.sigIsTrue = false;
+      this.rectIsTrue = false;
+
       if(this.pointIsTrue){
 
         this.ctx.shadowBlur = 0;
@@ -527,65 +534,168 @@ export class BoardviewComponent implements OnInit {
   }
 
   small(){
-       if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue){
+       if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue || this.rectIsTrue){
         this.line_width = 20;
        }
     
   }
   medium(){
-    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue){
+    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue || this.rectIsTrue){
       this.line_width = 40;
      }
     
   }
   large(){
-    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue){
+    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue || this.rectIsTrue){
       this.line_width = 80;
      }
   }
 
   red(){
-    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue){
+    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue || this.rectIsTrue){
       this.colour_selector = 'red';
      }
   }
 
   green(){
-    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue){
+    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.rectIsTrue){
       this.colour_selector = 'green';
      }
   }
 
   black(){
-    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue){
+    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue || this.rectIsTrue){
       this.colour_selector = 'black';
      }
   }
 
   blue(){
-    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue){
+    if(this.penIstrue || this.brushIstrue || this.sigIsTrue || this.glowIsTrue || this.pointIsTrue || this.rectIsTrue){
       this.colour_selector = 'blue';
      }
   }
 
-  pdfdownload(){
-    console.log("All okay!");
-    console.log(this.canvas.toDataURL);
+  // pdfdownload(){
+  //   console.log("All okay!");
+  //   console.log(this.canvas.toDataURL);
     
-    var imgData = this.canvas.toDataURL;
-    console.log(imgData);
+  //   var imgData = this.canvas.toDataURL();
+  //   console.log(imgData);
     
-    const doc = new jsPDF();
-    // doc.addImage(this.imgData, 'JPEG', 0, 0,this.scrWidth,this.scrHeight);
+  //   const doc = new jsPDF();
+  //   // doc.addImage(this.imgData, 'JPEG', 0, 0,this.scrWidth,this.scrHeight);
 
-    doc.text('some text here',10,10);
-    doc.save("download.pdf");
+  //   // doc.text('some text here',10,10);
+  //   // doc.save("download.pdf");
+  // }
+
+
+  //Adding Rectangle
+  rect_startX: any;
+  rect_startY: any;
+  rect_endX: any;
+  rect_endY: any;
+  rectIsTrue: any;
+  rect_height : any;
+  rect_width: any;
+
+  rect(){
+ 
+    
+    this.rectIsTrue = true;
+    this.penIstrue = false;
+    this.brushIstrue = false;
+    this.glowIsTrue = false;
+    this.sigIsTrue = false;
+    this.pointIsTrue = false;
+
+
+    if(this.rectIsTrue){
+
+      this.ctx.shadowBlur = 0;
+      this.ctx.shadowColor = 'rgb(0, 0, 0)';
+    }
+
+    if(this.rectIsTrue){
+          // console.log("Reatcnagle works!!");
+
+          this.globalListenFunc = this.renderer.listen('document', 'mousedown', e => {
+            this.mouseControl = true;
+            this.rect_startX = e.pageX;
+            this.rect_startY = e.pageY;
+
+            });
+          
+            this.globalListenFunc = this.renderer.listen('document', 'mousemove', e => {
+              if(this.mouseControl){
+                this.rect_endX = e.pageX
+                this.rect_endY = e.pageY
+                
+
+                this.ctx.lineJoin = 'round';
+                // this.ctx.clearRect(0, 0, this.rect_width, this.rect_height);
+               
+
+                if(this.rectIsTrue){
+                  // this.ctx.strokeRect(50, 50, 50, 50);
+                  //calculating width and height
+                                      this.rect_width = this.rect_endX - this.rect_startX;
+                                      this.rect_height = this.rect_endY - this.rect_startY
+                  // if(this.rect_startX <= this.rect_endX){
+                  //   this.rect_width = this.rect_endX - this.rect_startX;
+                  // }
+                  // else{
+                  //   this.rect_width = this.rect_startX - this.rect_endX;
+                  // }
+
+                  // if(this.rect_startY <= this.rect_endY){
+                  //   this.rect_height = this.rect_endY - this.rect_startY
+                  // }
+                  // else{
+                  //   this.rect_height = this.rect_startY - this.rect_endY
+                  // }
+                  console.log(this.ctx.strokeStyle);
+
+                  this.ctx.strokeRect(this.rect_startX, this.rect_startY, this.rect_width, this.rect_height);
+                  this.ctx.strokeStyle = this.colour_selector;
+                  this.ctx.lineWidth = this.line_width;
+ 
+                }
+
+              }
+
+            });
+
+            this.globalListenFunc = this.renderer.listen('document', 'mouseup', e => {
+              this.mouseControl = false;
+              // console.log(e,"Mouse up");
+              this.rect_endX = e.pageX;
+              this.rect_endY = e.pageY;
+            });
+
+
+    }
+
+    
   }
 
+  //pdf making
+  images = [{
+    name: "Image 1", url:"https://4.bp.blogspot.com/-OuIrYzKE1lM/WJ1nqskJ5pI/AAAAAAAAOww/v9JfD7Hb_Fwe_K1svBN7gz2A_BUKxbqGwCLcB/s400/mindblowing-awasome-wallpapers-imgs.jpg"
+  },
+  {
+    name:"Image 2",
+    url:"https://akm-img-a-in.tosshub.com/indiatoday/559_102017023826.jpg?TZlWXro5W8Rj4VbO.MpENgo1F2MX93j"
+  }]
 
-  //Image Adding!
-
+  // pdfdownload(){
+  //   let doc = new jsPDF();
+  //   let imagedata = canvas.toDataURL("image/png");
+  //   console.log(imagedata);
     
+  // }
+  
+  
   
 
   
