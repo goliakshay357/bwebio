@@ -77,11 +77,12 @@ export class BoardviewComponent implements OnInit {
 
   //Point based pen.
   pointIsTrue: any;
-  points = []; 
-  strokepoints = {
+  stroke = []; 
+  currentstroke = {
     width: 1,
     colour: 1,
-    points: []
+    points: [],
+    datatype : "null"
   }
 
   //imges
@@ -461,7 +462,7 @@ export class BoardviewComponent implements OnInit {
           // console.log(e,"Mouse down");
           this.point_startX = e.pageX;
           this.point_startY = e.pageY;
-          this.points.push({
+          this.currentstroke.points.push({
             x: this.point_startX,
             y: this.point_startY
           });
@@ -471,7 +472,7 @@ export class BoardviewComponent implements OnInit {
               this.point_currentX = e.pageX;
               this.point_currentY = e.pageY;
 
-              this.points.push({
+              this.currentstroke.points.push({
                 x: this.point_currentX,
                 y: this.point_currentY
               })
@@ -489,6 +490,10 @@ export class BoardviewComponent implements OnInit {
               this.point_startX = this.point_currentX;
               this.point_startY = this.point_currentY;
 
+              this.currentstroke.width = this.ctx.lineWidth
+              this.currentstroke.colour = this.ctx.strokeStyle
+              this.currentstroke.datatype = "point_based_pen"
+
             }      
           });
           
@@ -498,20 +503,21 @@ export class BoardviewComponent implements OnInit {
             this.point_lastX = e.pageX;
             this.point_lastY = e.pageY;
 
-            this.points.push({
+            this.currentstroke.points.push({
               x: this.point_lastX,
               y: this.point_lastY
 
             })
+
             
-            this.strokepoints.points.push(this.points);
-            this.strokepoints.colour = this.ctx.strokeStyle;
-            this.strokepoints.width = this.ctx.lineWidth;
+            // this.strokepoints.points.push(this.points);
+            // this.strokepoints.colour = this.ctx.strokeStyle;
+            // this.strokepoints.width = this.ctx.lineWidth;
+            this.stroke.push(this.currentstroke);
 
             //pushing points to backend!
             this.http.post("http://localhost:5555/Bwebio",{
-              "stroke" : this.strokepoints,
-              "datatype" : "point_based_pen" 
+              "stroke" : this.stroke
             }).subscribe(
               (data: any) => {
                 // this.products = res.json();
@@ -633,7 +639,7 @@ export class BoardviewComponent implements OnInit {
                 
 
                 this.ctx.lineJoin = 'round';
-                // this.ctx.clearRect(0, 0, this.rect_width, this.rect_height);
+
                
 
                 if(this.rectIsTrue){
@@ -655,8 +661,8 @@ export class BoardviewComponent implements OnInit {
                   //   this.rect_height = this.rect_startY - this.rect_endY
                   // }
                   console.log(this.ctx.strokeStyle);
-
-                  this.ctx.strokeRect(this.rect_startX, this.rect_startY, this.rect_width, this.rect_height);
+                  this.ctx.clearRect(this.startX, this.startY, this.scrWidth, this.scrHeight);
+                  this.ctx.fillRect(this.rect_startX, this.rect_startY, this.rect_width, this.rect_height);
                   this.ctx.strokeStyle = this.colour_selector;
                   this.ctx.lineWidth = this.line_width;
  
