@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BoardviewComponent } from './boardview/boardview.component';
 
 
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { LandingPageComponent } from './landing-page/landing-page.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoardviewComponent
+    BoardviewComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
