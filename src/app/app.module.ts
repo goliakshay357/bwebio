@@ -7,13 +7,17 @@ import { BoardviewComponent } from './boardview/boardview.component';
 
 
 import { HttpClientModule } from '@angular/common/http';
-import { LandingPageComponent } from './landing-page/landing-page.component'
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardviewComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
