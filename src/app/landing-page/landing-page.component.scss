@@ -1,0 +1,35 @@
+// .Main{
+//     display: block;
+// }
+.page2{
+    position: relative;
+}
+
+.loginPart{
+    background-color: bisque;
+    position: relative;
+
+
+    img{
+        position: absolute;
+    }
+
+    .p1{
+        position: absolute;
+    top: 500px;
+    left: 270px;
+    }
+
+    .p2{
+        position: absolute;
+    top: 450px;
+    left: 260px;
+    }
+
+    .loginSignin{
+        position: absolute;
+        top: 550px;
+        left: 940px;
+
+    }
+}
