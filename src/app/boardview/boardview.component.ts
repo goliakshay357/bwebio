@@ -45,6 +45,13 @@ export class BoardviewComponent implements OnInit {
   lastX: number;
   lastY: number;
 
+  // Screen scaling factor
+  currentWidth:any;
+  gotWidth: any;
+  scale:any;
+ 
+  //Initial backend data
+  got_backend_Data: any;
 
   //brush
   brushIstrue = false;
@@ -122,16 +129,18 @@ export class BoardviewComponent implements OnInit {
 
   constructor(public renderer:Renderer, private http : HttpClient ) {
     this.getScreenSize();
-    console.log(this.penIstrue,"Before");
+    // console.log(this.penIstrue,"Before");
    }
 
   ngOnInit() { 
+
     
-    console.log(this.canvas);
+    
+    // console.log(this.canvas);
     this.canvasElement=this.canvas.nativeElement;
     this.ctx = this.canvasElement.getContext('2d');
 
-    console.log(this.canvasElement,"canvas element"); 
+    // console.log(this.canvasElement,"canvas element"); 
 
     this.renderer.setElementAttribute(this.canvasElement, 'width', this.scrWidth);
     this.renderer.setElementAttribute(this.canvasElement, 'height', this.scrHeight);
@@ -146,6 +155,43 @@ export class BoardviewComponent implements OnInit {
       this.img.src = URL.createObjectURL(this.files[0]);
 
     })      
+
+    this.currentWidth = this.scrWidth;
+    this.gotWidth = this.scrWidth;
+    this.scale = this.gotWidth / this.currentWidth;
+
+    console.log(this.scale,"sclae");
+    
+
+    //getting data inisally from backend!
+    this.http.get('http://localhost:5555/Bwebio')
+    .subscribe(
+      (data) => {
+        console.log(data,"Got inicially from backend");
+        this.got_backend_Data = data;
+        this.draw(this.got_backend_Data);
+      }
+    )
+
+
+  }
+
+  draw(parameter1:any){
+    let data1 = parameter1[1];
+    console.log(data1.stroke.length,"Draw function");
+    for(let i=0; i<data1.stroke.length ; i++){
+      //got eact current stroke
+      // console.log(data1.stroke[i]);
+
+      for(let j=0;j< data1.stroke[i].points.length;j++){
+        // console.log("got points");
+        
+        
+      }
+      
+    }
+    
+    
   }
 
   failed(){
@@ -438,8 +484,9 @@ export class BoardviewComponent implements OnInit {
         
     }
   }  
-
+  
   pointBasedPen(){
+      
       // console.log("point based is working");
       this.pointIsTrue = true;
       this.penIstrue = false;
@@ -514,18 +561,6 @@ export class BoardviewComponent implements OnInit {
             // this.strokepoints.colour = this.ctx.strokeStyle;
             // this.strokepoints.width = this.ctx.lineWidth;
             this.stroke.push(this.currentstroke);
-
-            //pushing points to backend!
-            this.http.post("http://localhost:5555/Bwebio",{
-              "stroke" : this.stroke
-            }).subscribe(
-              (data: any) => {
-                // this.products = res.json();
-                // this.products = data;
-                console.log(data);
-                
-              }
-            )
             
           });  
 
@@ -537,6 +572,23 @@ export class BoardviewComponent implements OnInit {
 
 
       
+  }
+
+  savefile(){
+            //pushing points to backend!
+            //push method
+            this.http.post("http://localhost:5555/Bwebio",{
+              "stroke" : this.stroke,
+              "gotWidth" : this.scrWidth
+            }).subscribe(
+              (data: any) => {
+                // this.products = res.json();
+                // this.products = data;
+                console.log(data);
+                
+              }
+            )
+    
   }
 
   small(){
