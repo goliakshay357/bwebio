@@ -1,1 +1,9 @@
-<p>footer works!</p>
+<div id="tested">
+    <canvas id="myBtn" #myCanvas></canvas>
+    <button class="Rectangle" (click) = "rect()">Rect</button>
+    <button class="SVG" (click) = "SVG()" >Press</button>
+</div>
+
+<form>
+    <input type="file" (change)="preview($event)">
+</form>
